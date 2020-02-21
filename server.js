@@ -19,9 +19,32 @@ app.use(express.static("public"));
 mongoose.connect(process.env.MONGODB_URI || `mongodb://localhost/${dbName}`, { useNewUrlParser: true });
 
 //get main page
-app.get("/", (req,res) => {
+app.get("/", (req, res) => {
   res.sendFile("./public/index.html");
 });
+
+//get form page
+app.get("/exercise", (req, res) => {
+  res.sendFile(`${__dirname}/public/exercise.html`);
+});
+
+//add workouts to plan
+//POST `/api/workouts/${id}`
+//TODO get id
+app.post("/api/workouts", ({body}, res) => {
+  db.Workout.create({body})
+    .then(dbWorkout => {
+      res.json(dbWorkout);
+    })
+    .catch(err => {
+      res.json(err);
+    });
+});
+
+//add new workouts to new plan
+//POST `/api/workouts`
+
+//view combined weight on stats page
 
 //Start server
 app.listen(PORT, () => {
