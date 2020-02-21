@@ -28,6 +28,17 @@ app.get("/exercise", (req, res) => {
   res.sendFile(`${__dirname}/public/exercise.html`);
 });
 
+//get workouts
+app.get("/api/workouts", (req, res) => {
+  db.Workout.find({})
+    .then(dbWorkout => {
+      res.json(dbWorkout);
+    })
+    .catch(err => {
+      res.json(err);
+    });
+});
+
 // app.get(`/exercise?id=${id}`, (req, res) => {
 
 // });
