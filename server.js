@@ -18,6 +18,9 @@ app.use(express.static("public"));
 
 mongoose.connect(process.env.MONGODB_URI || `mongodb://localhost/${dbName}`, { useNewUrlParser: true });
 
+//TODO set routes
+//require("./app/routes/api-routes.js")(app);
+
 //get main page
 app.get("/", (req, res) => {
   res.sendFile("./public/index.html");
@@ -28,9 +31,30 @@ app.get("/exercise", (req, res) => {
   res.sendFile(`${__dirname}/public/exercise.html`);
 });
 
-//get workouts
+//get workouts 
+//TODO not working?
 app.get("/api/workouts", (req, res) => {
   db.Workout.find({})
+    .then(data => {
+      data.forEach( item => {
+        const workout = { _id: item._id, name: item.name };
+        workouts.push(workout);
+      });
+      res.render("index", {workouts: workouts});
+      // res.json(data)
+    })
+    // .then(dbWorkout => {
+    //   res.json(dbWorkout);
+    // })
+    // .catch(err => {
+    //   res.json(err);
+    // });
+});
+
+//post workouts
+//TODO not working?
+app.post("/api/workouts", (req, res) => {
+  db.Workout.create(req.body)
     .then(dbWorkout => {
       res.json(dbWorkout);
     })
