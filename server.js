@@ -35,20 +35,12 @@ app.get("/exercise", (req, res) => {
 //TODO not working?
 app.get("/api/workouts", (req, res) => {
   db.Workout.find({})
-    .then(data => {
-      data.forEach( item => {
-        const workout = { _id: item._id, name: item.name };
-        workouts.push(workout);
-      });
-      res.render("index", {workouts: workouts});
-      // res.json(data)
+    .then(dbWorkout => {
+      res.json(dbWorkout);
     })
-    // .then(dbWorkout => {
-    //   res.json(dbWorkout);
-    // })
-    // .catch(err => {
-    //   res.json(err);
-    // });
+    .catch(err => {
+      res.json(err);
+    });
 });
 
 //post workouts
@@ -110,6 +102,17 @@ app.put("/api/workouts/:id?", (req, res) => {
 
 //add new workouts to new plan
 //POST `/api/workouts`
+// app.post("/api/workouts", (req,res) => {
+//   db.Workout.create(req.body)
+//     .then(dbWorkout => {
+//       res.json(dbWorkout);
+//     })
+//     .catch(err => 
+//       res.json(err)
+//     );
+// })
+
+app.get("/api/workouts/range", (req, res) => {});
 
 //view combined weight on stats page
 
